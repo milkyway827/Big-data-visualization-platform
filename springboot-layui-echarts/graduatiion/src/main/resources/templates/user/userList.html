@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="icon" th:href="@{/images/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/layuimini.css?v=2.0.4.2}" media="all">
+    <link rel="stylesheet" th:href="@{/css/themes/default.css}" media="all">
+    <link rel="stylesheet" th:href="@{/lib/font-awesome-4.7.0/css/font-awesome.min.css}" media="all">
+    <style>
+        .div-content{
+            background-color: white;
+            border-radius: 5px;
+            padding: 15px;
+        }
+        .table-search-fieldset {
+            margin: 0;
+            border: 1px solid #e6e6e6;
+            padding: 10px 20px 5px 20px;
+            color: #6b6b6b;
+        }
+    </style>
+</head>
+<body>
+    <div class="div-content">
+        <form id="form-search" class="layui-form layui-form-pane" >
+            <fieldset class="table-search-fieldset">
+                <legend>搜索条件</legend>
+                <div class="layui-form-item">
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">用户姓名</label>
+                        <div class="layui-input-inline" style="width: 160px;">
+                            <input type="text" name="name" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <!--<label class="layui-form-label">生日</label>
+                        <div class="layui-input-inline" style="width: 120px;">
+                            <input type="text" name="startDate" placeholder="开始日期" autocomplete="off" class="layui-input date">
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline" style="width: 120px;">
+                            <input type="text" name="endDate" placeholder="结束日期" autocomplete="off" class="layui-input date">
+                        </div>-->
+                        <label class="layui-form-label">年龄</label>
+                        <div class="layui-input-inline" style="width: 120px;">
+                            <input type="text" name="startAge" placeholder="最小年龄" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline" style="width: 120px;">
+                            <input type="text" name="endAge" placeholder="最大年龄" autocomplete="off" class="layui-input">
+                        </div>
+
+                    </div>
+
+                    <div class="layui-inline">
+                        <button id="btn-search" lay-submit lay-filter="btn-search-filter" type="button" class="layui-btn layui-btn-radius layui-btn-normal">
+                            <i class="layui-icon layui-icon-search"></i>
+                            查询
+                        </button>
+                        <button id="btn-reset" type="reset" class="layui-btn layui-btn-radius layui-btn-primary">
+                            <i class="layui-icon layui-icon-fonts-clear"></i>
+                            清空
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <table id="table-user" lay-filter="table-user-filter"></table>
+    </div>
+
+    <!--将id变为对应name-->
+    <script type="text/html" id="convertEquipment">
+        {{#
+            return d.equipment.equipmentName;
+        }}
+    </script>
+
+    <script type="text/html" id="table-user-toolbar">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+            <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">删除</button>
+        </div>
+    </script>
+    <script type="text/html" id="col-user-toolbar">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+
+    <script th:src="@{/webjars/jquery/3.3.1-2/jquery.min.js}" charset="utf-8"></script>
+    <script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+    <script th:inline="javascript">
+
+
+        function refreshTable() {
+            $("#btn-reset").click();
+            $("#btn-search").click();
+        }
+
+        var ctxPath=[[@{/}]];
+
+        layui.use(['laydate','table','form'], function(){
+            var laydate = layui.laydate;
+            var table = layui.table;
+            var form = layui.form;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '.date' //指定元素
+            });
+
+            //监听表单提交
+            form.on('submit(btn-search-filter)', function(data){
+                //console.log(data.elem) //被执行事件的元素DOM对象，一般为button对象
+                //console.log(data.form) //被执行提交的form对象，一般在存在form标签时才会返回
+                // console.log(data.field) //当前容器的全部表单字段，名值对形式：{name: value},可以得到表单的数据
+                //刷新表格
+                table.reload('table-user', {
+                    where: { //设定异步数据接口的额外参数，任意设
+                        name:data.field.name,
+                        startAge:data.field.startAge,
+                        endAge:data.field.endAge
+                        /*startDate:data.field.startDate,
+                        endDate:data.field.endDate,*/
+                    }
+                    ,page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                }); //只重载数据
+
+                return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            });
+
+            //监听操作列
+            table.on('tool(table-user-filter)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+                var data = obj.data; //获得当前行数据
+                var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                if (layEvent == 'del'){
+                    layer.confirm('确认删除用户'+data.name+"?", {icon: 3, title:'删除确认'}, function(index){
+                        //异步请求删除数据，成功提示，刷新表格
+                        //转换为字符串  idArr.join(",")
+                        let url = ctxPath + "user/" +data.userId;
+                        var params ={
+                            _method:"DELETE"
+                        }
+                        $.post(url,params,function (response) {
+                            //
+                            if (response.code ==0){
+                                layer.msg(response.message ,{icon: 1});
+                                refreshTable();
+                            }else {
+                                layer.alert(response.message ,{icon: 1});
+                            }
+                        })
+                        layer.close(index);
+                    });
+                }else if(layEvent == 'edit'){
+                    layer.open({
+                        type: 2,
+                        title:"修改用户",
+                        area:['80%','80%'],
+                        shadeClose: true,//点击遮罩关闭页面
+                        content: ctxPath + "user/" + data.userId //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                    });
+                }
+            });
+
+
+            //用户列表表格渲染
+            table.render({
+                elem: '#table-user'
+                ,url: ctxPath+'user/list' //数据接口
+                ,page: true //开启分页
+                ,toolbar: "#table-user-toolbar"
+                ,limits:[5,10,30,50]
+                ,cols: [[ //表头
+                    {type:"checkbox",width: 50}
+                    ,{field: 'userId', title: '用户编号', width:110, sort: true,align:'center'}
+                    ,{field: 'name', title: '姓名', width:80,align:'center'}
+                    ,{field: 'username', title: '用户名', width:80,align:'center'}
+                    ,{field: 'password', title: '密码', width:90}
+                    ,{field: 'sex', title: '性别', width:90, sort: true,align:'center'}
+                    ,{field: 'age', title: '年龄', width:90, sort: true,align:'center'}
+                    ,{field: 'birthday', title: '生日', width:120, sort: true,align:'center'}
+                    //,{field: 'equipmentId', title: '设备编号', width: 110, sort: true,align:'center'}
+                    ,{field: 'Equipment', title: '设备类型', width: 110, sort: true,align:'center',templet:"#convertEquipment"}
+                    ,{field: 'phone', title: '手机号', width: 120,align:'center'}
+                    ,{field: 'address', title: '地址'}
+                    ,{title: '操作', width: 150, toolbar: '#col-user-toolbar'}
+                ]]
+            });
+
+            //表格头部工具栏监听
+            table.on('toolbar(table-user-filter)', function(obj){
+                if(obj.event == 'add'){
+                    layer.open({
+                        type: 2,
+                        title:"新增用户",
+                        area:['80%','80%'],
+                        shadeClose: true,//点击遮罩关闭页面
+                        content: ctxPath+'user/add/ui' //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+                    });
+                }else if(obj.event == 'delete'){
+                    //删除用户
+                    var checkStatus = table.checkStatus('table-user'); //idTest 即为基础参数 id 对应的值
+                    //console.log(checkStatus.data) //获取选中行的数据
+
+                    //如果没有选中任何数据
+                    if (checkStatus.data.length == 0){
+                        layer.alert('未选中任何数据', {icon: 2,anim:6,title:"警告"});
+                        return false;
+                    }
+
+                    var idArr =new Array();
+                    //取到id的数组[x,x,...]
+                    $(checkStatus.data).each(function () {
+                        idArr.push(this.userId);
+                    });
+
+                    layer.confirm('确认删除选中数据吗？', {icon: 3, title:'删除确认'}, function(index){
+                        //异步请求删除数据，成功提示，刷新表格
+                        //转换为字符串  idArr.join(",")
+                        /*let url = "/{ids}" +idArr.join(",");*/
+                        let url = ctxPath + "user/" +idArr.join(",");
+                        var params ={
+                            _method:"DELETE"
+                        }
+                        $.post(url,params,function (response) {
+                            //
+                            if (response.code ==0){
+                                layer.msg(response.message ,{icon: 1});
+                                refreshTable();
+                            }else {
+                                layer.alert(response.message ,{icon: 1});
+                            }
+                        })
+                        layer.close(index);
+                    });
+
+
+                }
+
+            });
+
+
+        });
+    </script>
+</body>
+</html>

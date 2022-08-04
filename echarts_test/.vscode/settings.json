@@ -1,0 +1,4 @@
+{
+    "openInDefaultBrowser.run.openWithLocalHttpServer": true,
+    "open-in-browser.default": "Chrome"
+}

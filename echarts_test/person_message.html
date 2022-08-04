@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>个人</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/person.css" />
+  </head>
+  <style>
+    
+  </style>
+  <body>
+    <header>
+      <h1>
+        数据分析平台
+      </h1>
+      <div class="buttons">
+        <span id="index">
+          <a href="index.html" >首页</a>
+        </span>
+        <span  id="equipment">
+          <a href="equipment_message.html" >设备</a>
+        </span>
+        <span id="person">
+          <a href="person_message.html" >个人</a>
+        </span>
+      </div>
+      <div class="showTime">当前时间：2020年3月17-0时54分14秒</div>
+      <script>
+        var t = null;
+        t = setTimeout(time, 1000); //開始运行
+        function time() {
+          clearTimeout(t); //清除定时器
+          dt = new Date();
+          var y = dt.getFullYear();
+          var mt = dt.getMonth() + 1;
+          var day = dt.getDate();
+          var h = dt.getHours(); //获取时
+          var m = dt.getMinutes(); //获取分
+          var s = dt.getSeconds(); //获取秒
+          document.querySelector(".showTime").innerHTML =
+            "当前时间：" +
+            y +
+            "年" +
+            mt +
+            "月" +
+            day +
+            "-" +
+            h +
+            "时" +
+            m +
+            "分" +
+            s +
+            "秒";
+          t = setTimeout(time, 1000); //设定定时器，循环运行
+        }
+      </script>
+    </header>
+    <section class="mainbox">
+      <div class="column">
+        <div class="panel emessage">
+          <h2>
+            个人设备状态
+          </h2>
+          <div class="chart">
+          </div>
+          <div class="panel-footer"></div>
+        </div>
+        <div class="panel time">
+          <h2>使用时间</h2>
+          <div class="chart"></div>
+          <div class="panel-footer"></div>
+        </div>
+        <div class="panel lucheng">
+          <h2>出行总路程</h2>
+          <div class="chart"></div>
+          <div class="panel-footer"></div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="map">
+          <!-- <div class="map1"></div> -->
+          <div class="map2"></div>
+          <div class="map3"></div>
+          <div class="chart"></div>
+        </div>
+        <div class="no">
+          <div class="no-hd">
+            <ul>
+              <li id="distance_t">125811</li>
+              <li id="hours_t">104563</li>
+            </ul>
+          </div>
+          <div class="no-bd">
+            <ul>
+              <li>出行总里程(Km)</li>
+              <li>使用总时长(H)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="login">
+          <h2 class="welcome">欢迎,点击用户名登录切换!
+            <a id="username" href="/html/login.html" >AAA
+            </a>
+          </h2>
+          <div class="login-footer"></div>
+        </div>
+        <div class="panel">
+          <h2>个人信息</h2>
+          <div class="chart">
+              <div class="pm">
+                <div class="row1"><h3>姓名:</h3><p id="name"></p></div>
+                <div class="row1"><h3>年龄:</h3><p id="age"></p></div>
+                <div class="row1"><h3>产品号:</h3><p id="equipment_id"></p></div>
+              </div>
+              <div class="pm">
+                <div class="row2"><h3>性别:</h3><p id="sex"></p></div>
+                <div class="row2"><h3>生日:</h3><p id="birthday"></p></div>
+              </div>
+              <div class="pm">
+                <div class="row3"><h3>手机号:</h3><p id="phone"></p></div>
+              </div>
+              <div class="pm">
+                <div class="row4"><h3>地址:</h3><p id="address"></p></div>
+              </div>
+          </div>
+          <div class="panel-footer"></div>
+        </div>
+        <div class="suggest">
+          <h2>注意事项</h2>
+          <ul>
+            <li class="li">1.使用前务必确认电量充足，设备完好，确保使用时不会发生意外故障。</li><br/>
+            <li class="li">2.当设备损坏不能使用，可回收旧设备换取一定的折扣。</li><br/>
+            <li class="li">3.请不要将用户账号给予他人，以免个人信息泄露带来麻烦。</li><br/>
+            <li class="li">4.不将设备放在危险地方，降低设备的损耗。</li><br/>
+            <li class="li">5.设备损坏请及时联系维修人员。<br/>
+              维修电话：17623228828 。</li><br/>
+            <li class="li">6.用户名密码丢失请联系管理员找回！<br/>
+              管理员联系方式如下：<br/>
+              QQ: 7339336885<br/>
+              邮箱：739336885@qq.com<br/>
+            </li><br/>
+          </ul>
+          <!-- <div class="chart"></div> -->
+          <div class="suggest-footer"></div>
+        </div> 
+       
+      </div>
+    </section>
+    
+    <script src="js/flexible.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/china.js"></script>
+    <script src="js/myperson.js"></script>
+
+    <script type="text/javascript">
+      //定义基础用户表中字段
+      var username1;
+      var name1;
+      var sex1;
+      var age1;
+      var birthday1;
+      var phone1;
+      var address1;
+      var equipment_id1;
+
+      var distance_t1;
+      var hours_t1;
+
+      function getusers() {
+        $.ajax({
+            type: "post",
+            async: false,//异步请求
+            url: "http://localhost:3000/php/person/person_m.php",
+            data: {},  //发送给数据库的数据
+            dataType: "json",//json 类型
+            success: function(result){
+                // alert("成功！");
+                // console.log(result);
+                if(result){
+                    for(var i = 0 ; i < result.length; i++){
+                      username1=(result[i].username);
+                      name1=(result[i].name);
+                      sex1=(result[i].sex);
+                      age1=(result[i].age);
+                      birthday1=(result[i].birthday);
+                      phone1=(result[i].phone);
+                      address1=(result[i].address);
+                      equipment_id1=(result[i].equipment_id);
+
+                      distance_t1=(result[i].distance_t);
+                      hours_t1=(result[i].hours_t);
+                    }
+                }
+            },
+            error: function(errmsg) {
+                alert("获取个人数据出错了！"+ errmsg);
+                // console.log(result);//日志打印具体错误信息
+          }
+        });
+        // console.log('出' +name1);
+        return username,name1,sex1,age1,birthday1,phone1
+              ,address1,equipment_id1,distance_t1,hours_t1;
+      }
+        // 执行异步请求
+      getusers();
+
+      //替换页面的默认值
+      // alert(name1);
+      $("#username").text(username1);
+      $("#name").text(name1);
+      $("#sex").text(sex1);
+      $("#age").text(age1);
+      $("#birthday").text(birthday1);
+      $("#phone").text(phone1);
+      $("#address").text(address1);
+      $("#equipment_id").text(equipment_id1);
+
+      $("#distance_t").text(distance_t1);
+      $("#hours_t").text(hours_t1);
+
+    </script>
+  </body>
+</html>

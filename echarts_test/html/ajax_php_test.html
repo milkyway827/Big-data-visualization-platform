@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>JQuery Ajax Test</title>
+    <link rel="shortcut icon" href="#"/>
+
+    <script src="js/jquery.js"></script>
+    <script type="text/javascript"></script>
+    <script src="js/echarts.min.js"></script>
+</head>
+<body>
+    <h1>PHP Ajax ECahrts 测试</h1>
+    <hr>
+    <div id="container" style="width: 600px; height: 400px;"></div>
+    <script>
+
+    // 初始化两个数组，盛装从数据库中获取到的数据
+    var names = Array(); 
+    var ages = Array();
+
+    //调用ajax来实现异步的加载数据
+    function getusers() {
+        $.ajax({
+            // type: "post",
+            type: "post",
+            async: false,//异步请求
+            url: "http://localhost:3000/php/indexget.php",
+            data: {},  //发送给数据库的数据
+            dataType: "json",//json 类型
+            success: function(result){
+                alert("成功！");
+                if(result){
+                    for(var i = 0 ; i < result.length; i++){
+                        names.push(result[i].name);
+                        ages.push(result[i].age);
+                        console.log(result[i].name);
+                        console.log(result[i].age);
+                    }
+                }
+            },
+            error: function(errmsg) {
+                alert("Ajax获取服务器数据出错了！"+ errmsg);
+                // console.log(result);//日志打印具体错误信息
+            }
+        });
+    return names, ages;
+    }
+
+    // 执行异步请求
+    getusers();
+
+
+    // 初始化 图表对象
+        var mychart = echarts.init(document.getElementById("container"));
+        // 进行相关项的设置，也就是所谓的搭搭骨架，方便待会的ajax异步的数据填充
+        var option = {
+            title : {
+                text : '姓名年龄分布图'
+            },
+            tooltip : {
+                show : true
+            },
+            legend : {
+                data : [ 'age' ]
+            },
+            xAxis : [ {
+                data : names
+            } ],
+            yAxis : [ {
+                type : 'value'
+            } ],
+            series : [ {
+                "name" : "age",
+                "type" : "bar",
+                "data" : ages
+            } ]
+        };
+
+        // 将配置项赋给chart对象，来显示相关的数据
+        mychart.setOption(option);
+
+
+
+
+    </script>
+ <marquee>确认可以到达这里啊</marquee> 
+
+</body>
+</html> 
+
+

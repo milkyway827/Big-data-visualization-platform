@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>设备</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/equipment.css" />
+  </head>
+  <style>
+    
+  </style>
+  <body>
+    <header>
+      <h1>
+        数据分析平台
+      </h1>
+      <div class="buttons">
+        <!-- onclick="window.location.href='//www.baidu.com'" target="myiframe" -->
+        <!-- <span>
+          <a href="indexBottomHome.html" target="myiframe">首页</a>
+        </span>
+        <span  id="equipment">
+          <a href="equipment_message.html" target="myiframe">设备页</a>
+        </span>
+        <span id="person">
+          <a href="person_message.html" target="myiframe">个人页</a>
+        </span> -->
+        <span>
+          <a href="index.html" >首页</a>
+        </span>
+        <span  id="equipment">
+          <a href="equipment_message.html" >设备</a>
+        </span>
+        <span id="person">
+          <a href="person_message.html" >个人</a>
+        </span>
+      </div>
+
+      <div class="showTime">当前时间：2020年3月17-0时54分14秒</div>
+      <script>
+        var t = null;
+        t = setTimeout(time, 1000); //開始运行
+        function time() {
+          clearTimeout(t); //清除定时器
+          dt = new Date();
+          var y = dt.getFullYear();
+          var mt = dt.getMonth() + 1;
+          var day = dt.getDate();
+          var h = dt.getHours(); //获取时
+          var m = dt.getMinutes(); //获取分
+          var s = dt.getSeconds(); //获取秒
+          document.querySelector(".showTime").innerHTML =
+            "当前时间：" +
+            y +
+            "年" +
+            mt +
+            "月" +
+            day +
+            "-" +
+            h +
+            "时" +
+            m +
+            "分" +
+            s +
+            "秒";
+          t = setTimeout(time, 1000); //设定定时器，循环运行
+        }
+      </script>
+    </header>
+    <section class="mainbox">
+      <div class="column">
+        <div class="function function">
+          <h2>具备基本功能</h2>
+          <div class="chart"></div>
+          <div class="function-footer"></div>
+        </div>
+        <div class="tip">
+          <h2>
+            通过雷达图显示出不同型号在各个方面优劣情况<br/>
+            客户依据自身状况进行选择
+          </h2>
+          <div class="tip-footer"></div>
+        </div>
+        <div class="panel material">
+          <h2>设备材料分析</h2>
+          <div class="chart"></div>
+          <div class="panel-footer"></div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="summary">
+          <div class="summary-footer"></div>
+          <div class="chart"></div>
+        </div>
+        <div class="tip">
+          <h2>
+            从导盲杖的硬件和软件入手<br/>
+            分别分析软硬件的基本功能和其具备的优点
+          </h2>
+          <div class="tip-footer"></div>
+        </div>
+      </div> 
+      <div class="column">
+        <div class="panel2 concept">
+          <h2>产品概念图</h2>
+          <div class="picture" >
+            <a href="/images/daomangcon_concept.jpg">点击查看</a>
+          </div>
+          <div class="panel2-footer"></div>
+        </div>
+        <div class="panel2 useryaer">
+          <h2>使用年限</h2>
+          <div class="chart"></div>
+          <div class="panel2-footer"></div>
+        </div>
+      </div>
+    </section> 
+
+    <script src="js/flexible.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/echarts.min.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/equipment.js"></script>
+
+    <script>
+      
+    </script>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎</title>
+</head>
+<body>
+<!--
+    欢迎，<span th:text="${session.userInfo.getUsername()}"></span>!
+-->
+    欢迎，<span th:text="${session.adminInfo.getAdminName()}"></span>!
+</body>
+</html>
